@@ -1,0 +1,49 @@
+/*===== test.html =====*/
+1.	HTML tags are all in full caps
+
+2.	DOCTYPE can be shortened to <!DOCTYPE html> fot HTML5 compatibility
+
+3.	The value in the html tag's xmlns:fb parameter is already deprecated. New one is "http://ogp.me/ns/fb#"
+	Personally, I would probably use the Javascript SDK instead of XFBML.
+
+4.	The JQuery src is referencing a older version at Jquery's site.
+	Better option would be to use the versions hosted on GoogleAPIs since alot of sites already do this and it would probably be cached on the user's browser already.
+
+5.	Javascript comments don't start and end with <!-- & -->. Those are for HTML comments.
+
+6.	.get is for getting DOM elements. The AJAX function should be:
+	$.ajax({
+		url: "./getinfo/111",
+		cache: false
+	}).done(function(data){
+		$('.InfoDiv').html(data);
+	});
+
+7.	The Font tag is a relic from HTML4. CSS should be used to style the Header instead. For example:
+	<h1 style="font-family:Verdana,Arial,Times New Roman; color:#00FF00;"></h1>
+
+8.	The div with fb-root should be placed after the <body> tag so that the Javascript SDK loads as soon as the page loads.
+	For that matter... where is the Javascript code for loading the SDK in the following script tag?
+
+9.	the explode function should be used instead of 'split'. Split is the Javascript equivalent of PHP's expode.
+
+10. $id = $ArrayURL[2]; //$ArrayURL[1] would simply return 'getinfo'
+
+/*===== data.php =====*/
+11.	my preferred code for establishing a database connection would be:
+	$this->mysql = mysqli_connect("myhost","myuser","mypassw","mybd") or die("Failed to connect to MySQL: (".mysqli_connect_errno().")".mysqli_connect_error());
+	Personally, I would close the connection as soon as I'm done with the querying so there aren't any idle DB connections.
+
+12.	Perhaps the various get functions in propertyData should use a setter function to set the returned value to the variables.
+
+13.	Also, is there REALLY a need to use objects for something like this?
+
+/*===== data.sql =====*/
+12.	Personally I would prefer to use varchar(255) for 'Title' instead of char(255)
+
+13.	Condo table's PID should be a bigint.
+
+14.	Will the database need to handle lots of transactions? Maybe changing the HDB and Condo table to MyISAM would be a good idea since it's faster.
+
+15.	Personally, I would merge all 3 tables into 1.
+	A little bit of repeated data is alright because atomic queries that are run on one table would be faster than having to do joins between three tables.
